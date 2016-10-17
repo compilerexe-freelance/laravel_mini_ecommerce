@@ -50,7 +50,7 @@
                 <button type="submit" class="button is-primary is-medium" style="width: 150px;">บันทึก</button>
               </p>
               <p class="control is-expanded" style="text-align: left;">
-                <button type="button" id="btn_cancle" class="button is-primary is-medium" style="width: 150px;">ยกเลิก</button>
+                <button type="reset" class="button is-primary is-medium" style="width: 150px;">ยกเลิก</button>
               </p>
             </div>
           </div>
@@ -64,9 +64,6 @@
   <script type="text/javascript">
     $(document).ready(function() {
       $('#list_product').show();
-      $('#btn_cancle').click(function() {
-        $('#category_name').val(null);
-      });
     });
   </script>
 @endsection

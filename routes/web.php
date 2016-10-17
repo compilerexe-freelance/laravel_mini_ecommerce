@@ -44,43 +44,94 @@ Route::group(['prefix' => '/'], function() {
     });
 });
 
-Route::group(['prefix' => '/admin'], function() {
+Route::group(['prefix' => 'admin'], function() {
     Route::get('main', function() {
         return view('admin.main');
     });
-    Route::get('product/add', function() {
-        return view('admin.product.add_product');
-    });
 
-    // GET Catagory
-    Route::get('category/add', function() {
-        return view('admin.category.add_category');
-    });
-    Route::get('category/edit', [
-        'as'    =>  'category/edit',
-        'uses'  =>  function() {
-            return view('admin.category.edit_category');
-        }
-    ]);
-    Route::get('category/edit/{id}', function($id) {
-        $category = App\Category::find($id);
-        return view('admin.category.form_edit_category')->with('id', $id)->with('category', $category);
-    });
-    Route::get('category/delete', [
-        'as'    =>  'category/delete',
-        'uses'  =>  function() {
-            return view('admin.category.delete_category');
-        }
-    ]);
-    Route::get('category/delete/{id}', function($id) {
-        $category = App\Category::find($id);
-        $category->delete();
-        return redirect()->route('category/delete')->with('status', 'success');
-    });
+    /* Product */
+      // GET Product
+      Route::get('product/add', function() {
+          $categorys = App\Category::all();
+          return view('admin.product.add_product')
+          ->with('categorys', $categorys);
+      });
+      Route::get('product/edit', [
+          'as'    =>  'product/edit',
+          'uses'  =>  function() {
+              $products  = App\Product::all();
+              return view('admin.product.edit_product')
+              ->with('products', $products);
+          }
+      ]);
+      Route::get('product/edit/{id}', function($id) {
+          $product    = App\Product::find($id);
+          $categorys  = App\Category::all();
+          return view('admin.product.form_edit_product')
+          ->with('id', $id)
+          ->with('product', $product)
+          ->with('categorys', $categorys);
+      });
+      Route::get('product/delete', [
+          'as'    =>  'product/delete',
+          'uses'  =>  function() {
+              $products  = App\Product::all();
+              return view('admin.product.delete_product')
+              ->with('products', $products);
+          }
+      ]);
+      Route::get('product/delete/{id}', function($id) {
+          $product = App\Product::find($id);
+          File::delete(public_path('uploads/products/').$product->product_picture);
+          $product->delete();
+          return redirect()->route('product/delete')->with('status', 'success');
+      });
 
-    // POST Category
-    Route::post('category/add', 'EcommerceController@postCategoryAdd');
-    Route::post('category/edit/{id}', 'EcommerceController@postCategoryEdit');
+      // POST Product
+      Route::post('product/add', 'EcommerceController@postProductAdd');
+      Route::post('product/edit/{id}', 'EcommerceController@postProductEdit');
+    /* End Product */
+
+    /* Category */
+      // GET Catagory
+      Route::get('category/add', [
+          'as'    =>  'category/add',
+          'uses'  =>  function() {
+            return view('admin.category.add_category');
+          }
+      ]);
+      Route::get('category/edit', [
+          'as'    =>  'category/edit',
+          'uses'  =>  function() {
+              $categorys  = App\Category::all();
+              return view('admin.category.edit_category')
+              ->with('categorys', $categorys);
+          }
+      ]);
+      Route::get('category/edit/{id}', function($id) {
+          $category = App\Category::find($id);
+          return view('admin.category.form_edit_category')
+          ->with('id', $id)
+          ->with('category', $category);
+      });
+      Route::get('category/delete', [
+          'as'    =>  'category/delete',
+          'uses'  =>  function() {
+              $categorys  = App\Category::all();
+              return view('admin.category.delete_category')
+              ->with('categorys', $categorys);
+          }
+      ]);
+      Route::get('category/delete/{id}', function($id) {
+          $category = App\Category::find($id);
+          $category->delete();
+          return redirect()->route('category/delete')->with('status', 'success');
+      });
+
+      // POST Category
+      Route::post('category/add', 'EcommerceController@postCategoryAdd');
+      Route::post('category/edit/{id}', 'EcommerceController@postCategoryEdit');
+    /* End Category */
 
     Route::get('stock', function() {
         return view('admin.stock');
@@ -101,6 +152,4 @@ Route::group(['prefix' => '/admin'], function() {
         return view('admin.info_admin');
     });
 
-
-    Route::post('product/add', 'EcommerceController@postProductAdd');
 });

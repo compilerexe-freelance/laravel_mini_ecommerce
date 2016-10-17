@@ -11,6 +11,7 @@ use App\Product;
 use Illuminate\Http\Request;
 use DB;
 use Input;
+use File;
 use App\Http\Requests;
 
 class EcommerceController extends Controller
@@ -31,40 +32,61 @@ class EcommerceController extends Controller
     }
 
 
-    // public function postProductAdd() {
-    //     $filename = null;
-    //     $validator = Validator::make($request->all(), [
-    //         'title'   => 'required',
-    //         'detail'  => 'required'
-    //     ]);
-    //     if ($validator->fails()) {
-    //         return redirect()->back()->withErrors($validator)->withInput();
-    //     } else {
-    //         $file = array('image' => Input::file('image'));
-    //         if ($request->file('image') != '') {
-    //             $destinationPath = 'uploads/project';
-    //             $extension = Input::file('image')->getClientOriginalExtension();
-    //             $filename = rand(111111111,999999999).'.'.$extension;
-    //             Input::file('image')->move($destinationPath, $filename);
-    //             DB::table('project_detail')->insert([
-    //                 'title'       => $request->get('title'),
-    //                 'detail'      => $request->get('detail'),
-    //                 'image'       => $filename,
-    //                 'username'    => Auth::user()->username,
-    //                 'created_at'  => date('Y-m-d h:i:s'),
-    //                 'updated_at'  => date('Y-m-d h:i:s')
-    //             ]);
-    //         } else {
-    //             DB::table('project_detail')->insert([
-    //                 'title'       => $request->get('title'),
-    //                 'detail'      => $request->get('detail'),
-    //                 'image'       => '-',
-    //                 'username'    => Auth::user()->username,
-    //                 'created_at'  => date('Y-m-d h:i:s'),
-    //                 'updated_at'  => date('Y-m-d h:i:s')
-    //             ]);
-    //         }
-    //     }
-    //     return redirect('/admin/project/project')->with('status', 'บันทึกโครงการสำเร็จ');
-    // }
+    public function postProductAdd(Request $request) {
+        $filename = null;
+        $file = array('image' => Input::file('image'));
+        if ($request->file('image') != null) {
+            $destinationPath = 'uploads/products/';
+            $extension = Input::file('image')->getClientOriginalExtension();
+            $filename = rand(111111111,999999999).'.'.$extension;
+            if (!File::exists($destinationPath)) {
+                File::makeDirectory($destinationPath, 0777, true, true);
+            }
+            Input::file('image')->move($destinationPath, $filename);
+            $product = new Product;
+            $product->product_name      =   $request->product_name;
+            $product->category_name     =   $request->category_name;
+            $product->product_detail    =   $request->product_detail;
+            $product->product_price     =   $request->product_price;
+            $product->product_warrant   =   $request->product_warrant;
+            $product->product_count     =   $request->product_count;
+            $product->product_picture   =   $filename;
+            $product->save();
+            return redirect()->back()->with('status', 'success');
+        }
+    }
+
+    public function postProductEdit(Request $request) {
+        $product = new Product;
+        $product = $product::find($request->id);
+        $filename = null;
+        $file = array('image' => Input::file('image'));
+        if ($request->file('image') != null) {
+            $destinationPath = 'uploads/products/';
+            $extension = Input::file('image')->getClientOriginalExtension();
+            $filename = rand(111111111,999999999).'.'.$extension;
+            if (!File::exists($destinationPath)) {
+                File::makeDirectory($destinationPath, 0777, true, true);
+            }
+            File::delete(public_path('uploads/products/').$product->product_picture);
+            Input::file('image')->move($destinationPath, $filename);
+            $product->product_name      =   $request->product_name;
+            $product->category_name     =   $request->category_name;
+            $product->product_detail    =   $request->product_detail;
+            $product->product_price     =   $request->product_price;
+            $product->product_warrant   =   $request->product_warrant;
+            $product->product_count     =   $request->product_count;
+            $product->product_picture   =   $filename;
+        } else {
+            $product->product_name      =   $request->product_name;
+            $product->category_name     =   $request->category_name;
+            $product->product_detail    =   $request->product_detail;
+            $product->product_price     =   $request->product_price;
+            $product->product_warrant   =   $request->product_warrant;
+            $product->product_count     =   $request->product_count;
+        }
+        $product->save();
+        return redirect()->route('product/edit')->with('status', 'success');
+    }
+
 }

@@ -14,7 +14,7 @@
 
     <div class="tile is-parent">
       <div class="tile is-child box">
-        <form action="{{ url('admin/product/add') }}" method="post" enctype="multipart/form-data">
+        <form action="{{ url('admin/product/edit/'.$id) }}" method="post" enctype="multipart/form-data">
 
           {{ csrf_field() }}
 
@@ -32,7 +32,7 @@
             </div>
             <div class="control is-grouped">
               <p class="control is-expanded" style="text-align: center;">
-                <span class="title is-4"><b>เพิ่มสินค้า</b></span>
+                <span class="title is-4"><b>แก้ไขสินค้า</b></span>
               </p>
             </div>
           </div>
@@ -43,7 +43,7 @@
             </div>
             <div class="control is-grouped">
               <p class="control is-expanded">
-                <input type="text" class="input" name="product_name" required>
+                <input type="text" class="input" name="product_name" value="{{ $product->product_name }}" required>
               </p>
             </div>
           </div>
@@ -58,7 +58,11 @@
                   <select name="category_name" required>
                     <option selected disabled value="">เลือกหมวดหมู่สินค้า</option>
                     @foreach ($categorys as $category)
-                      <option value="{{ $category->category_name }}">{{ $category->category_name }}</option>
+                      @if ($category->category_name == $product->category_name)
+                        <option value="{{ $category->category_name }}" selected>{{ $category->category_name }}</option>
+                      @else
+                        <option value="{{ $category->category_name }}">{{ $category->category_name }}</option>
+                      @endif
                     @endforeach
                   </select>
                 </span>
@@ -72,7 +76,7 @@
             </div>
             <div class="control is-grouped">
               <p class="control is-expanded">
-                <input type="text" name="product_detail" class="input" required>
+                <input type="text" name="product_detail" class="input" value="{{ $product->product_detail }}" required>
               </p>
             </div>
           </div>
@@ -83,7 +87,7 @@
             </div>
             <div class="control is-grouped">
               <p class="control is-expanded">
-                <input type="text" name="product_price" class="input" required>
+                <input type="text" name="product_price" class="input" value="{{ $product->product_price }}" required>
               </p>
             </div>
           </div>
@@ -94,7 +98,7 @@
             </div>
             <div class="control is-grouped">
               <p class="control is-expanded">
-                <input type="text" name="product_warrant" class="input" required>
+                <input type="text" name="product_warrant" class="input" value="{{ $product->product_warrant }}" required>
               </p>
             </div>
           </div>
@@ -105,7 +109,7 @@
             </div>
             <div class="control is-grouped">
               <p class="control is-expanded">
-                <input type="text" name="product_count" class="input" required>
+                <input type="text" name="product_count" class="input" value="{{ $product->product_count }}" required>
               </p>
             </div>
           </div>
@@ -116,7 +120,7 @@
             </div>
             <div class="control is-grouped">
               <p class="control is-expanded">
-                <input type="file" name="image" required>
+                <input type="file" name="image">
               </p>
             </div>
           </div>

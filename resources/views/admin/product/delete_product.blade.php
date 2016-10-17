@@ -4,7 +4,7 @@
 
   @if (Session('status'))
     <script type="text/javascript">
-      swal("แก้ไขหมวดหมู่สำเร็จ", "", "success")
+      swal("ลบสินค้าสำเร็จ", "", "success")
     </script>
   @endif
 
@@ -20,16 +20,16 @@
 
           <div class="columns" style="text-align: left;">
             <div class="column">
-              <a href="{{ url('admin/category/add') }}" class="button is-light"><b><span class="icon"><i class="fa fa-plus"></i></span> เพิ่มหมวดหมู่สินค้า</b></a>
-              <a href="{{ url('admin/category/edit') }}" class="button is-light"><b><span class="icon"><i class="fa fa-pencil"></i></span> แก้ไขหมวดหมู่สินค้า</b></a>
-              <a href="{{ url('admin/category/delete') }}" class="button is-light"><b><span class="icon"><i class="fa fa-minus-circle"></i></span> ลบหมวดหมู่สินค้า</b></a>
+              <a href="{{ url('admin/product/add') }}" class="button is-light"><b><span class="icon"><i class="fa fa-plus"></i></span> เพิ่มสินค้า</b></a>
+              <a href="{{ url('admin/product/edit') }}" class="button is-light"><b><span class="icon"><i class="fa fa-pencil"></i></span> แก้ไขสินค้า</b></a>
+              <a href="{{ url('admin/product/delete') }}" class="button is-light"><b><span class="icon"><i class="fa fa-minus-circle"></i></span> ลบสินค้า</b></a>
               <hr>
             </div>
           </div>
 
           <div class="columns" style="text-align: center;">
             <div class="column">
-              <span class="title is-4"><b>แก้ไขหมวดหมู่สินค้า</b></span>
+              <span class="title is-4" style="color: red;"><b>ลบสินค้า</b></span>
             </div>
           </div>
 
@@ -39,16 +39,16 @@
                 <thead>
                   <tr>
                     <th>ลำดับที่</th>
-                    <th>ชื่อหมวดหมู่สินค้า</th>
+                    <th>ชื่อสินค้า</th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach ($categorys as $category)
+                  @foreach ($products as $product)
                     <tr>
                       <td>{{ $loop->iteration }}</td>
-                      <td>{{ $category->category_name }}</td>
-                      <td><a href="edit/{{ $category->id }}" class="button is-primary" style="width: 100%;">แก้ไข</a></td>
+                      <td>{{ $product->product_name }}</td>
+                      <td><a href="delete/{{ $product->id }}" class="button is-primary" style="width: 100%;">ลบ</a></td>
                     </tr>
                   @endforeach
                 </tbody>

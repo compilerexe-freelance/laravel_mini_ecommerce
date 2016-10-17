@@ -2,15 +2,6 @@
 
 @section('content')
 
-  <?php
-
-    use App\Category;
-
-    $categorys = App\Category::all();
-    $row_number = 1;
-
-  ?>
-
   @if (Session('status'))
     <script type="text/javascript">
       swal("ลบหมวดหมู่สำเร็จ", "", "success")
@@ -38,7 +29,7 @@
 
           <div class="columns" style="text-align: center;">
             <div class="column">
-              <span class="title is-4"><b>ลบหมวดหมู่สินค้า</b></span>
+              <span class="title is-4" style="color: red;"><b>ลบหมวดหมู่สินค้า</b></span>
             </div>
           </div>
 
@@ -53,18 +44,13 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <?php
-                    foreach ($categorys as $category) {
-                      echo '
-                        <tr>
-                          <td>'. $row_number .'</td>
-                          <td>'. $category->category_name .'</td>
-                          <td><a href="delete/'. $category->id .'" class="button is-primary" style="width: 100%;">ลบ</a></td>
-                        </tr>
-                      ';
-                      $row_number++;
-                    }
-                  ?>
+                  @foreach ($categorys as $category)
+                    <tr>
+                      <td>{{ $loop->iteration }}</td>
+                      <td>{{ $category->category_name }}</td>
+                      <td><a href="delete/{{ $category->id }}" class="button is-primary" style="width: 100%;">ลบ</a></td>
+                    </tr>
+                  @endforeach
                 </tbody>
               </table>
             </div>
