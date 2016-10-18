@@ -133,15 +133,26 @@ Route::group(['prefix' => 'admin'], function() {
       Route::post('category/edit/{id}', 'EcommerceController@postCategoryEdit');
     /* End Category */
 
-    Route::get('stock', function() {
-        return view('admin.stock');
-    });
-    Route::get('stock/product', function() {
-        return view('admin.stock_find_product');
-    });
-    Route::get('stock/product/edit', function() {
-        return view('admin.stock_edit');
-    });
+    /* Stock */
+    // GET Stock
+    Route::get('stock', [
+        'as'    =>  'stock',
+        'uses'  =>  function() {
+          $categorys  = App\Category::all();
+          return view('admin.stock.stock')
+          ->with('categorys', $categorys);
+        }
+    ]);
+    // Route::get('stock/product/edit', function() {
+    //     return view('admin.stock.stock_edit');
+    // });
+
+    //POST Stock
+    Route::post('stock/product', 'EcommerceController@postStockProduct');
+    Route::post('stock/edit', 'EcommerceController@postStockEdit');
+    Route::post('stock/product/edit', 'EcommerceController@postStockProductEdit');
+    /* End Stock */
+
     Route::get('info/member', function() {
         return view('admin.list_member');
     });

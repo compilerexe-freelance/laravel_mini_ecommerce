@@ -89,4 +89,25 @@ class EcommerceController extends Controller
         return redirect()->route('product/edit')->with('status', 'success');
     }
 
+    public function postStockProduct(Request $request) {
+        $product = new Product;
+        $product = $product::where('category_name', '=', $request->category_name)->get();
+        return view('admin.stock.stock_find_product')->with('products', $product);
+    }
+
+    public function postStockEdit(Request $request) {
+        $product = new Product;
+        $product = $product::where('product_name', '=', $request->product_name)->first();
+        return view('admin.stock.stock_edit')->with('product', $product);
+    }
+
+    public function postStockProductEdit(Request $request) {
+        $product = new Product;
+        $product = $product::where('product_name', '=', $request->product_name)->first();
+        $product->product_count         =   $request->product_count;
+        $product->save();
+        return redirect()->route('stock')->with('status', 'success');
+    }
+
+
 }
