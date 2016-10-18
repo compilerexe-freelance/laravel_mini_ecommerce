@@ -4,7 +4,10 @@
     <meta charset="utf-8">
     <title>e-commerce</title>
     <link rel="stylesheet" href="{{ url('css/bulma.css') }}" media="screen" title="no title">
-
+    <link rel="stylesheet" href="{{ url('css/font-awesome.min.css') }}" media="screen" title="no title">
+    <link rel="stylesheet" href="{{ url('css/sweetalert.css') }}" media="screen" title="no title">
+    <script src="{{ url('js/jquery-3.1.1.min.js') }}"></script>
+    <script src="{{ url('js/sweetalert.min.js') }}"></script>
     <style media="screen">
       @font-face {
         font-family: 'Kanit';

@@ -13,7 +13,7 @@
 
 Route::group(['prefix' => '/'], function() {
     Route::get('/', function () {
-        return view('welcome');
+        return view('member.home')->with('active_menu', 'home');
     });
     Route::get('home', function() {
         return view('member.home')->with('active_menu', 'home');
@@ -42,6 +42,8 @@ Route::group(['prefix' => '/'], function() {
     Route::get('print/detail', function() {
         return view('member.print_detail');
     });
+
+    Route::post('register', 'EcommerceController@postRegister');
 });
 
 Route::group(['prefix' => 'admin'], function() {
@@ -154,7 +156,9 @@ Route::group(['prefix' => 'admin'], function() {
     /* End Stock */
 
     Route::get('info/member', function() {
-        return view('admin.list_member');
+        $members = App\Member::all();
+        return view('admin.list_member')
+        ->with('members', $members);
     });
     Route::get('info/order', function() {
         return view('admin.list_order');

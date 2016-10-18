@@ -26,18 +26,14 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                </tr>
-                <tr>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                  <td>...</td>
-                </tr>
+                @foreach ($members as $member)
+                  <tr>
+                    <td>{{ $member->member_name }}</td>
+                    <td>{{ $member->member_address }}</td>
+                    <td>{{ $member->member_tel }}</td>
+                    <td>{{ $member->member_email }}</td>
+                  </tr>
+                @endforeach
               </tbody>
             </table>
           </div>

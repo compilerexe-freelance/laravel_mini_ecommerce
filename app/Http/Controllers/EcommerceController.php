@@ -9,6 +9,7 @@ use App\Order;
 use App\Product;
 
 use Illuminate\Http\Request;
+use Validator;
 use DB;
 use Input;
 use File;
@@ -104,9 +105,29 @@ class EcommerceController extends Controller
     public function postStockProductEdit(Request $request) {
         $product = new Product;
         $product = $product::where('product_name', '=', $request->product_name)->first();
-        $product->product_count         =   $request->product_count;
+        $product->product_count  =  $request->product_count;
         $product->save();
         return redirect()->route('stock')->with('status', 'success');
+    }
+
+    public function postRegister(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'password'  =>  'required|confirmed',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->with('error', $validator->fails());
+        } else {
+            $member = new Member;
+            $member->member_name        =   $request->member_name;
+            $member->member_address     =   $request->member_address;
+            $member->member_tel         =   $request->member_tel;
+            $member->member_email       =   $request->member_email;
+            $member->member_password    =   $request->password;
+            $member->save();
+            return redirect()->back()->with('status', 'success');
+        }
+
     }
 
 
